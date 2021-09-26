@@ -1,7 +1,7 @@
 # CS:APP labs
 
 ## 实验列表
-- [x] [Data Lab](./datalab/README)
+- [x] [Data Lab](./datalab/README.md)
 - [ ] Bomb Lab
 - [ ] Attack Lab
 - [ ] Architechture Lab
