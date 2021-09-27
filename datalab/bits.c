@@ -163,7 +163,7 @@ int tmin(void) {
  *   Rating: 1
  */
 int isTmax(int x) {
-	return !((x & ~x) | (!~x) | (~(x + 1) ^ x));
+	return !((!~x) | (~(x + 1) ^ x));
 }
 /* 
  * allOddBits - return 1 if all odd-numbered bits in word set to 1
@@ -294,7 +294,7 @@ unsigned floatScale2(unsigned uf) {
 	else {
 		exp += (frac >> 22) & 1;
 		frac <<= 1;
-  }
+	}
 	
 	return (uf & 0x80000000) + (exp << 23) + (frac & 0x7fffff);
 }
@@ -316,17 +316,17 @@ int floatFloat2Int(unsigned uf) {
 	int E = exp - 127;
 	
 	if (E < 0) return 0;
-	else if (E == 0) return 1 * (sign == 1 ? -1 : 1);
+	else if (E == 0) return sign ? -1 : 1;
 	else if (E > 31) return 0x80000000;
 	else {
 		int frac = uf & 0x007fffff;
 		frac += 1 << 23;
-		if (E <= 23) frac >>= (23 -E);
+		if (E <= 23) frac >>= (23 - E);
 		else frac <<= (E - 23);
 		
-		if (sign == 1) frac = -frac;
+		if (sign) frac = -frac;
 		return frac;
-  }
+	}
 }
 /* 
  * floatPower2 - Return bit-level equivalent of the expression 2.0^x
@@ -344,7 +344,5 @@ int floatFloat2Int(unsigned uf) {
 unsigned floatPower2(int x) {
 	if (x < -126) return 0;
 	else if (x > 128) return 0x7f800000;
-	
-	x += 127;
-	return x << 23;
+	else return (x + 127) << 23;
 }
